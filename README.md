@@ -9,3 +9,4 @@ Dependencies are both [Towny](https://github.com/TownyAdvanced/Towny) and [NoteB
 
 permissions for stuff:
 - towny.command.town.set.music to let people set music
+- towny.command.town.set.music to let people toggle it on their towns
