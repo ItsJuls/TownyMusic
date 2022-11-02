@@ -1,0 +1,4 @@
+# Gives extra octaves for songs, resource pack for it needed.
+ExtraOctaves: false
+# Seconds to fade out song if left the town.
+FadeOutSeconds: 2

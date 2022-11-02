@@ -27,10 +27,11 @@ public final class TownyMusic extends JavaPlugin {
         plugin = this;
         logger = plugin.getLogger();
         pm = plugin.getServer().getPluginManager();
+        checkDependencies();
         createDirectory();
         registerEvents();
-        checkDependencies();
         registerCommands();
+        plugin.saveDefaultConfig();
     }
 
 
@@ -69,10 +70,6 @@ public final class TownyMusic extends JavaPlugin {
     }
 
     public void registerCommands(){
-        List<Town> towns = TownyAPI.getInstance().getTowns();
-        List<String> listOfTownNames = towns.stream().map(t -> t.getName()).collect(Collectors.toList());
-        File file = new File(plugin.getDataFolder(), "/Songs");
-        List<String> files = Arrays.asList(file.list());
 
         AddonCommand setMusic = new AddonCommand(TownyCommandAddonAPI.CommandType.TOWN_SET, "Music", new SetMusicCommand());
         TownyCommandAddonAPI.addSubCommand(setMusic);
@@ -84,8 +81,6 @@ public final class TownyMusic extends JavaPlugin {
         TownyCommandAddonAPI.addSubCommand(adminSetMusic);
 
         AddonCommand adminToggleMusic = new AddonCommand(TownyCommandAddonAPI.CommandType.TOWNYADMIN_TOGGLE, "Music", new AdminToggleCommand());
-        adminToggleMusic.setTabCompletion(0, listOfTownNames);
-        adminToggleMusic.setTabCompletion(1, files);
         TownyCommandAddonAPI.addSubCommand(adminToggleMusic);
 
         plugin.getCommand("togglemusic").setExecutor(new PlayerToggleCommand());

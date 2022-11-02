@@ -8,6 +8,7 @@ import com.xxmicloxx.NoteBlockAPI.model.FadeType;
 import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
 import com.xxmicloxx.NoteBlockAPI.songplayer.Fade;
 import com.xxmicloxx.NoteBlockAPI.songplayer.SongPlayer;
+import itsjules.townymusic.TownyMusic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,7 +31,7 @@ public class TownLeaveListener implements Listener {
             for (SongPlayer sp : songPlayer) {
                 Fade fadeout = sp.getFadeOut();
                 fadeout.setType(FadeType.LINEAR);
-                fadeout.setFadeDuration(40);
+                fadeout.setFadeDuration(TownyMusic.plugin.getConfig().getInt("FadeOutSeconds") * 20);
                 sp.setRepeatMode(RepeatMode.NO);
                 sp.setPlaying(false, fadeout);
             }

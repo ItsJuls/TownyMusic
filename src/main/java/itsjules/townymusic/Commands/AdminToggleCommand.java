@@ -18,31 +18,32 @@ public class AdminToggleCommand implements CommandExecutor, TabExecutor {
     TownyAPI api = TownyAPI.getInstance();
     List<Town> towns = TownyAPI.getInstance().getTowns();
     List<String> listOfTownNames = towns.stream().map(t -> t.getName()).toList();
-    List<String> choices = List.of("on", "fuck");
+    List<String> choices = List.of("on", "off");
 
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         String enabledMessage = args[0] + "'s Music has been Enabled";
         String disabledMessage = args[0] + "'s Music has been Disabled";
+        if (args.length == 0) {
+            TownyMessaging.sendErrorMsg(sender, "This Town does not exist!");
+            return false;
+        }
 
-        if (args.length != 0) {
-            if (listOfTownNames.stream().anyMatch(list -> list.equalsIgnoreCase(args[0]))) {
-                if(args[1].equalsIgnoreCase("on")){
-                    api.getTown(args[0]).addMetaData(new BooleanDataField("ToggleMusic", true));
-                    TownyMessaging.sendMsg(sender, enabledMessage);
-                }else if(args[1].equalsIgnoreCase("off")){
-                    api.getTown(args[0]).addMetaData(new BooleanDataField("ToggleMusic", false));
-                    TownyMessaging.sendMsg(sender , disabledMessage);
-                }
-            } else {
-                TownyMessaging.sendErrorMsg(sender, "This Town does not exist!");
+        if (listOfTownNames.stream().anyMatch(list -> list.equalsIgnoreCase(args[0]))) {
+            if (args[1].equalsIgnoreCase("on")) {
+                api.getTown(args[0]).addMetaData(new BooleanDataField("ToggleMusic", true));
+                TownyMessaging.sendMsg(sender, enabledMessage);
+            } else if (args[1].equalsIgnoreCase("off")) {
+                api.getTown(args[0]).addMetaData(new BooleanDataField("ToggleMusic", false));
+                TownyMessaging.sendMsg(sender, disabledMessage);
             }
         } else {
             TownyMessaging.sendErrorMsg(sender, "You have to put a Town!");
             return false;
         }
-   return false; }
+        return false;
+    }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {

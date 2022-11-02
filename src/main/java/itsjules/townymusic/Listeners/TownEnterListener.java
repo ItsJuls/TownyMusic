@@ -67,8 +67,10 @@ public class TownEnterListener implements Listener {
             rsp.addPlayer(player);
             rsp.setPlaying(true);
             rsp.setRepeatMode(RepeatMode.ONE);
+            if(TownyMusic.plugin.getConfig().getBoolean("ExtraOctaves", false)){
+                rsp.setEnable10Octave(true);
+            }
             TownyMessaging.sendMsg(player, "Playing now: " + rsp.getSong().getTitle());
-            
         }
 
     }
