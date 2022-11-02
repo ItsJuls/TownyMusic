@@ -6,3 +6,6 @@ Dependencies are both [Towny](https://github.com/TownyAdvanced/Towny) and [NoteB
 - needs some improvement i guess
 - built in towny commands to set/toggle music like /town set/toggle music
 - /togglemusic on/off for each player
+
+permissions for stuff:
+- towny.command.town.set.music to let people set music
