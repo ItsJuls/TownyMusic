@@ -3,7 +3,6 @@ package itsjules.townymusic.Commands;
 import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Translatable;
 import com.palmergames.bukkit.towny.object.metadata.BooleanDataField;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

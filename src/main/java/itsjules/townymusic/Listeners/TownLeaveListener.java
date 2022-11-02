@@ -3,7 +3,6 @@ package itsjules.townymusic.Listeners;
 
 import com.palmergames.bukkit.towny.event.PlayerLeaveTownEvent;
 import com.palmergames.bukkit.towny.object.Town;
-import com.palmergames.bukkit.towny.object.metadata.StringDataField;
 import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import com.xxmicloxx.NoteBlockAPI.model.FadeType;
 import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;

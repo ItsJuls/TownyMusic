@@ -21,7 +21,7 @@ public class PlayerToggleCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(args.length > 1){
+        if(args.length == 0){
             return false;
         }
 
@@ -29,6 +29,7 @@ public class PlayerToggleCommand implements CommandExecutor, TabCompleter {
         if(args[0].equalsIgnoreCase("off") && sender instanceof Player){
             ((Player) sender).getPersistentDataContainer().set(new NamespacedKey(TownyMusic.plugin, "TownyMusic"), PersistentDataType.STRING, "false");
             TownyMessaging.sendMsg(sender, "Music inside towns has been turned off.");
+
             for(SongPlayer rsp : NoteBlockAPI.getSongPlayersByPlayer(((Player) sender).getPlayer())){
                 rsp.destroy();
             }
@@ -41,7 +42,7 @@ public class PlayerToggleCommand implements CommandExecutor, TabCompleter {
         }
 
         if(!(sender instanceof Player)){
-            TownyMusic.plugin.getLogger().warning("You aren't a player!");
+            TownyMusic.logger.warning("You aren't a player!");
             return false;
         }
 
@@ -52,10 +53,7 @@ public class PlayerToggleCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        ArrayList<String> list = new ArrayList<>();
-
-        list.add("on");
-        list.add("off");
+        List<String> list = List.of("on", "off");
 
         return list;
     }

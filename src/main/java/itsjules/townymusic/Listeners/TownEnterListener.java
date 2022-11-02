@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public class TownEnterListener implements Listener {
 
-    private HashMap<UUID, SongPlayer> radioMap = new HashMap<>();
+    public static HashMap<UUID, SongPlayer> radioMap = new HashMap<>();
 
     @EventHandler
     public void onTownEnter(PlayerEnterTownEvent event) {
@@ -34,11 +34,10 @@ public class TownEnterListener implements Listener {
 
                 Town town = event.getEnteredtown();
 
-                File file = new File(TownyMusic.plugin.getDataFolder(), "/Songs/" + town.getMetadata("Music").getValue()
-                        .toString()
-                        .replaceAll("]", "")
-                        .replaceAll("\\[", "")
-                        .replaceAll(",", ""));
+                String songName  = String.join(" ", (CharSequence) town.getMetadata("Music").getValue());
+
+                File file = new File(TownyMusic.plugin.getDataFolder(), "/Songs/" + songName);
+
 
                 if (player.getPersistentDataContainer().getOrDefault(new NamespacedKey(TownyMusic.plugin, "TownyMusic"), PersistentDataType.STRING, "true").equalsIgnoreCase("true")) {
 
@@ -52,7 +51,7 @@ public class TownEnterListener implements Listener {
                                 radioMap.get(player.getUniqueId()).destroy();
                             }
 
-                            playMusic(player, town, song, rsp);
+                            playMusic(player, rsp);
                             radioMap.put(player.getUniqueId(), rsp);
                         }
 
@@ -64,7 +63,7 @@ public class TownEnterListener implements Listener {
         }
     }
 
-        public void playMusic (Player player, Town town, Song song, RadioSongPlayer rsp){
+        public void playMusic (Player player, RadioSongPlayer rsp){
             rsp.addPlayer(player);
             rsp.setPlaying(true);
             rsp.setRepeatMode(RepeatMode.ONE);
