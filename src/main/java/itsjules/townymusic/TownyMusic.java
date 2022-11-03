@@ -84,6 +84,7 @@ public final class TownyMusic extends JavaPlugin {
         TownyCommandAddonAPI.addSubCommand(adminToggleMusic);
 
         plugin.getCommand("togglemusic").setExecutor(new PlayerToggleCommand());
+        plugin.getCommand("volume").setExecutor(new VolumeCommand());
 
     }
 }

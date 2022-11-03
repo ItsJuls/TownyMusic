@@ -8,3 +8,5 @@ description: Plays Music inside Towns!
 commands:
   togglemusic:
     description: toggles music
+  volume:
+    description: sets volume for music

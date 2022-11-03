@@ -19,7 +19,12 @@ public class PlayerToggleCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(args[0].equalsIgnoreCase("on") && sender instanceof Player || args.length == 0){
+        if(args.length == 0){
+            TownyMessaging.sendMsg(sender, "/togglemusic on/off");
+            return true;
+        }
+
+        if(args[0].equalsIgnoreCase("on") && sender instanceof Player){
             ((Player) sender).getPersistentDataContainer().set(new NamespacedKey(TownyMusic.plugin, "TownyMusic"), PersistentDataType.STRING, "true");
             TownyMessaging.sendMsg(sender, "Music inside towns has been turned on.");
             return true;
