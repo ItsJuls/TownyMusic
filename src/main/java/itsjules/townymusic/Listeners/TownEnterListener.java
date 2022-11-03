@@ -54,7 +54,7 @@ public class TownEnterListener implements Listener {
                                 radioMap.get(player.getUniqueId()).destroy();
                             }
 
-                            playMusic(player, rsp);
+                            playMusic(player, town,  rsp);
                             radioMap.put(player.getUniqueId(), rsp);
                         }
 
@@ -66,11 +66,18 @@ public class TownEnterListener implements Listener {
         }
     }
 
-        public void playMusic (Player player, RadioSongPlayer rsp){
+        public void playMusic (Player player, Town town, RadioSongPlayer rsp){
             PersistentDataContainer pdc = player.getPersistentDataContainer();
             rsp.addPlayer(player);
             rsp.setPlaying(true);
-            rsp.setRepeatMode(RepeatMode.ONE);
+            RepeatMode rpm;
+            if(town.getMetadata("ToggleRepeat").getValue().equals(true)){
+                rpm = RepeatMode.ONE;
+            }else{
+                rpm = RepeatMode.NO;
+            }
+
+            rsp.setRepeatMode(rpm);
             rsp.setVolume(pdc.getOrDefault(new NamespacedKey(TownyMusic.plugin, "TownyMusicVolume"), PersistentDataType.BYTE, (byte) 100));
             if(TownyMusic.plugin.getConfig().getBoolean("ExtraOctaves", false)){
                 rsp.setEnable10Octave(true);

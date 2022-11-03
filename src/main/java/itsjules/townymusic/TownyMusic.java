@@ -1,9 +1,7 @@
 package itsjules.townymusic;
 
-import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.TownyCommandAddonAPI;
 import com.palmergames.bukkit.towny.object.AddonCommand;
-import com.palmergames.bukkit.towny.object.Town;
 import itsjules.townymusic.Commands.*;
 import itsjules.townymusic.Listeners.TownCreateListener;
 import itsjules.townymusic.Listeners.TownEnterListener;
@@ -12,10 +10,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public final class TownyMusic extends JavaPlugin {
     public static TownyMusic plugin;
@@ -77,6 +72,9 @@ public final class TownyMusic extends JavaPlugin {
         AddonCommand toggleMusic = new AddonCommand(TownyCommandAddonAPI.CommandType.TOWN_TOGGLE, "Music", new ToggleMusicCommand());
         TownyCommandAddonAPI.addSubCommand(toggleMusic);
 
+        AddonCommand toggleRepeat = new AddonCommand(TownyCommandAddonAPI.CommandType.TOWN_TOGGLE, "Repeat", new TownRepeatCommand());
+        TownyCommandAddonAPI.addSubCommand(toggleRepeat);
+
         AddonCommand adminSetMusic = new AddonCommand(TownyCommandAddonAPI.CommandType.TOWNYADMIN_SET, "Music", new AdminSetCommand());
         TownyCommandAddonAPI.addSubCommand(adminSetMusic);
 
@@ -85,6 +83,7 @@ public final class TownyMusic extends JavaPlugin {
 
         plugin.getCommand("togglemusic").setExecutor(new PlayerToggleCommand());
         plugin.getCommand("volume").setExecutor(new VolumeCommand());
+        plugin.getCommand("reloadconfig").setExecutor(new ReloadCommand());
 
     }
 }

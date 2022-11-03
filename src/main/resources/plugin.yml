@@ -10,3 +10,5 @@ commands:
     description: toggles music
   volume:
     description: sets volume for music
+  reloadconfig:
+    description: reloads configuration
