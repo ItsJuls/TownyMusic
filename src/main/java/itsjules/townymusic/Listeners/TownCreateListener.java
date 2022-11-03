@@ -11,6 +11,6 @@ public class TownCreateListener implements Listener {
     public void onTownCreate(NewTownEvent event){
         event.getTown().addMetaData(new BooleanDataField("ToggleMusic", true));
         TownyMessaging.sendMsg(event.getTown().getMayor().getPlayer(), "Hey, You just made a town! Congrats, why not set some music using /t set music");
-
+        event.getTown().addMetaData(new BooleanDataField("ToggleRepeat", true));
     }
 }

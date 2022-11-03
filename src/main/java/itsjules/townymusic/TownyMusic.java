@@ -1,8 +1,18 @@
 package itsjules.townymusic;
 
+import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.TownyCommandAddonAPI;
 import com.palmergames.bukkit.towny.object.AddonCommand;
-import itsjules.townymusic.Commands.*;
+import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.metadata.BooleanDataField;
+import itsjules.townymusic.Commands.AdminCommands.AdminSetCommand;
+import itsjules.townymusic.Commands.AdminCommands.AdminToggleCommand;
+import itsjules.townymusic.Commands.PlayerCommands.PlayerToggleCommand;
+import itsjules.townymusic.Commands.PlayerCommands.ReloadCommand;
+import itsjules.townymusic.Commands.PlayerCommands.VolumeCommand;
+import itsjules.townymusic.Commands.TownCommands.SetMusicCommand;
+import itsjules.townymusic.Commands.TownCommands.ToggleMusicCommand;
+import itsjules.townymusic.Commands.TownCommands.TownRepeatCommand;
 import itsjules.townymusic.Listeners.TownCreateListener;
 import itsjules.townymusic.Listeners.TownEnterListener;
 import itsjules.townymusic.Listeners.TownLeaveListener;
@@ -26,13 +36,28 @@ public final class TownyMusic extends JavaPlugin {
         createDirectory();
         registerEvents();
         registerCommands();
+        checkTowns();
         plugin.saveDefaultConfig();
+
     }
 
 
     @Override
     public void onDisable() {
         logger.info("Shutting down plugin.");
+    }
+
+    public void checkTowns(){
+        logger.info("Applying data for towns...");
+        for(Town town: TownyAPI.getInstance().getTowns()){
+            if(!town.hasMeta("ToggleMusic")){
+                town.addMetaData(new BooleanDataField("ToggleMusic", true));
+            }
+
+            if(!town.hasMeta("ToggleRepeat")){
+                town.addMetaData(new BooleanDataField("ToggleRepeat", true));
+            }
+        }
     }
 
     public void checkDependencies(){
