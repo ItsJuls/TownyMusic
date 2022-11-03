@@ -20,20 +20,26 @@ import java.util.List;
 
 public class SetMusicCommand implements CommandExecutor, TabExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args){
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         Resident resident = TownyUniverse.getInstance().getResident(((Player) sender).getUniqueId());
-        if(sender instanceof Player) {
-            if(resident.hasTown()){
-                if(resident.isMayor() || ((Player) sender).getPlayer().hasPermission("towny.command.town.set.music")){
-                    resident.getTownOrNull().addMetaData(new StringDataField("Music", String.join(" ", args)));
-                    TownyMessaging.sendPrefixedTownMessage(resident.getTownOrNull(), "Town Music has been set to: " + String.join(" ", args));
-                }
-            }else{
-                TownyMusic.logger.warning("A player has to run this command!");
-            }
+        if (!(sender instanceof Player)) {
+            TownyMusic.logger.warning("must be run by a player!");
+            return true;
         }
-        return true;
 
+        if (!resident.hasTown()) {
+            TownyMessaging.sendErrorMsg(sender, "You don't have a town!");
+            return true;
+        }
+
+        if (!resident.isMayor() && !((Player) sender).getPlayer().hasPermission("towny.command.town.set.music")) {
+            TownyMessaging.sendErrorMsg(sender, "You don't have permission for this or aren't the Mayor!");
+            return true;
+        }
+        resident.getTownOrNull().addMetaData(new StringDataField("Music", String.join(" ", args)));
+        TownyMessaging.sendPrefixedTownMessage(resident.getTownOrNull(), "Town Music has been set to: " + String.join(" ", args));
+
+        return true;
     }
 
     @Override

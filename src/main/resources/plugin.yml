@@ -1,10 +1,14 @@
 name: TownyMusic
 version: '${project.version}'
 main: itsjules.townymusic.TownyMusic
-api-version: 1.19
+api-version: 1.18
 depend: [Towny, NoteBlockAPI]
 authors: [ ItsJules_ ]
 description: Plays Music inside Towns!
 commands:
   togglemusic:
     description: toggles music
+  volume:
+    description: sets volume for music
+  reloadconfig:
+    description: reloads configuration

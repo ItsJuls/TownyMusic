@@ -1,8 +1,7 @@
 package itsjules.townymusic.Commands;
 
 import com.palmergames.bukkit.towny.TownyMessaging;
-import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
-import com.xxmicloxx.NoteBlockAPI.songplayer.SongPlayer;
+import itsjules.townymusic.Listeners.TownEnterListener;
 import itsjules.townymusic.TownyMusic;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
@@ -14,7 +13,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerToggleCommand implements CommandExecutor, TabCompleter {
@@ -22,24 +20,26 @@ public class PlayerToggleCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(args.length == 0){
-            return false;
+            TownyMessaging.sendMsg(sender, "/togglemusic on/off");
+            return true;
         }
 
+        if(args[0].equalsIgnoreCase("on") && sender instanceof Player){
+            ((Player) sender).getPersistentDataContainer().set(new NamespacedKey(TownyMusic.plugin, "TownyMusic"), PersistentDataType.STRING, "true");
+            TownyMessaging.sendMsg(sender, "Music inside towns has been turned on.");
+            return true;
+        }
 
         if(args[0].equalsIgnoreCase("off") && sender instanceof Player){
             ((Player) sender).getPersistentDataContainer().set(new NamespacedKey(TownyMusic.plugin, "TownyMusic"), PersistentDataType.STRING, "false");
             TownyMessaging.sendMsg(sender, "Music inside towns has been turned off.");
 
-            for(SongPlayer rsp : NoteBlockAPI.getSongPlayersByPlayer(((Player) sender).getPlayer())){
-                rsp.destroy();
+            if(TownEnterListener.radioMap.containsKey(((Player) sender).getUniqueId())){
+                TownEnterListener.radioMap.get(((Player) sender).getUniqueId()).destroy();
             }
 
         }
 
-        if(args[0].equalsIgnoreCase("on") && sender instanceof Player || args.length == 0){
-            ((Player) sender).getPersistentDataContainer().set(new NamespacedKey(TownyMusic.plugin, "TownyMusic"), PersistentDataType.STRING, "true");
-            TownyMessaging.sendMsg(sender, "Music inside towns has been turned on.");
-        }
 
         if(!(sender instanceof Player)){
             TownyMusic.logger.warning("You aren't a player!");
@@ -53,8 +53,7 @@ public class PlayerToggleCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        List<String> list = List.of("on", "off");
 
-        return list;
+        return List.of("on", "off");
     }
 }

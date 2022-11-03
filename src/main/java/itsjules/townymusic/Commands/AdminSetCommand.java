@@ -27,7 +27,8 @@ public class AdminSetCommand implements CommandExecutor, TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args){
         if(args.length != 0){
             if(listOfTownNames.stream().anyMatch(list -> list.equalsIgnoreCase(args[0]))){
-                String song = String.join(" ", args);
+
+                String song = String.join(" ", List.of(args).remove(0));
                 String message = args[0] + "'s music has been changed to: " + song;
                 TownyAPI.getInstance().getTown(args[0]).addMetaData(new StringDataField("Music", song));
                 TownyMessaging.sendMsg(sender,  message);
