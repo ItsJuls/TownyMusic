@@ -14,6 +14,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
@@ -32,6 +33,8 @@ public class TownEnterListener implements Listener {
 
                 Player player = event.getPlayer();
 
+                PersistentDataContainer pdc = player.getPersistentDataContainer();
+
                 Town town = event.getEnteredtown();
 
                 String songName  = String.join(" ", (CharSequence) town.getMetadata("Music").getValue());
@@ -39,7 +42,7 @@ public class TownEnterListener implements Listener {
                 File file = new File(TownyMusic.plugin.getDataFolder(), "/Songs/" + songName);
 
 
-                if (player.getPersistentDataContainer().getOrDefault(new NamespacedKey(TownyMusic.plugin, "TownyMusic"), PersistentDataType.STRING, "true").equalsIgnoreCase("true")) {
+                if (pdc.getOrDefault(new NamespacedKey(TownyMusic.plugin, "TownyMusic"), PersistentDataType.STRING, "true").equalsIgnoreCase("true")) {
 
                     if (!file.isDirectory()) {
                         if (file.exists()) {
@@ -64,9 +67,11 @@ public class TownEnterListener implements Listener {
     }
 
         public void playMusic (Player player, RadioSongPlayer rsp){
+            PersistentDataContainer pdc = player.getPersistentDataContainer();
             rsp.addPlayer(player);
             rsp.setPlaying(true);
             rsp.setRepeatMode(RepeatMode.ONE);
+            rsp.setVolume(pdc.getOrDefault(new NamespacedKey(TownyMusic.plugin, "TownyMusicVolume"), PersistentDataType.BYTE, (byte) 100));
             if(TownyMusic.plugin.getConfig().getBoolean("ExtraOctaves", false)){
                 rsp.setEnable10Octave(true);
             }
