@@ -4,18 +4,21 @@ import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.TownyCommandAddonAPI;
 import com.palmergames.bukkit.towny.object.AddonCommand;
 import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.metadata.BooleanDataField;
 import itsjules.townymusic.Commands.AdminCommands.AdminSetCommand;
 import itsjules.townymusic.Commands.AdminCommands.AdminToggleCommand;
+import itsjules.townymusic.Commands.AdminCommands.PurgeMusicCommand;
 import itsjules.townymusic.Commands.PlayerCommands.PlayerToggleCommand;
 import itsjules.townymusic.Commands.PlayerCommands.ReloadCommand;
 import itsjules.townymusic.Commands.PlayerCommands.VolumeCommand;
+import itsjules.townymusic.Commands.PlotCommands.PlotRepeatCommand;
+import itsjules.townymusic.Commands.PlotCommands.PlotSetMusicCommand;
+import itsjules.townymusic.Commands.PlotCommands.PlotToggleMusicCommand;
 import itsjules.townymusic.Commands.TownCommands.SetMusicCommand;
 import itsjules.townymusic.Commands.TownCommands.ToggleMusicCommand;
 import itsjules.townymusic.Commands.TownCommands.TownRepeatCommand;
-import itsjules.townymusic.Listeners.TownCreateListener;
-import itsjules.townymusic.Listeners.TownEnterListener;
-import itsjules.townymusic.Listeners.TownLeaveListener;
+import itsjules.townymusic.Listeners.*;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -57,6 +60,15 @@ public final class TownyMusic extends JavaPlugin {
             if(!town.hasMeta("ToggleRepeat")){
                 town.addMetaData(new BooleanDataField("ToggleRepeat", true));
             }
+            for(TownBlock tb: town.getTownBlocks()){
+                if(!tb.hasMeta("ToggleMusic")){
+                    tb.addMetaData(new BooleanDataField("ToggleMusic", true));
+                }
+
+                if(!tb.hasMeta("ToggleRepeat")){
+                    tb.addMetaData(new BooleanDataField("ToggleRepeat", true));
+                }
+            }
         }
     }
 
@@ -84,9 +96,11 @@ public final class TownyMusic extends JavaPlugin {
         }
     }
     public void registerEvents(){
-        pm.registerEvents(new TownEnterListener(), plugin);
+        pm.registerEvents(new PlayerJoinListener(), plugin);
         pm.registerEvents(new TownLeaveListener(), plugin);
+        pm.registerEvents(new PlotEnterListener(), plugin);
         pm.registerEvents(new TownCreateListener(), plugin);
+        pm.registerEvents(new PlotClaimListener(), plugin);
     }
 
     public void registerCommands(){
@@ -106,8 +120,18 @@ public final class TownyMusic extends JavaPlugin {
         AddonCommand adminToggleMusic = new AddonCommand(TownyCommandAddonAPI.CommandType.TOWNYADMIN_TOGGLE, "Music", new AdminToggleCommand());
         TownyCommandAddonAPI.addSubCommand(adminToggleMusic);
 
+        AddonCommand plotSetMusic = new AddonCommand(TownyCommandAddonAPI.CommandType.PLOT_SET, "Music", new PlotSetMusicCommand());
+        TownyCommandAddonAPI.addSubCommand(plotSetMusic);
+
+        AddonCommand plotToggleMusic = new AddonCommand(TownyCommandAddonAPI.CommandType.PLOT_TOGGLE, "Music", new PlotToggleMusicCommand());
+        TownyCommandAddonAPI.addSubCommand(plotToggleMusic);
+
+        AddonCommand plotRepeatCommand = new AddonCommand(TownyCommandAddonAPI.CommandType.PLOT_TOGGLE, "Repeat", new PlotRepeatCommand());
+        TownyCommandAddonAPI.addSubCommand(plotRepeatCommand);
+
         plugin.getCommand("togglemusic").setExecutor(new PlayerToggleCommand());
         plugin.getCommand("volume").setExecutor(new VolumeCommand());
+        plugin.getCommand("purgemusic").setExecutor(new PurgeMusicCommand());
         plugin.getCommand("reloadconfig").setExecutor(new ReloadCommand());
 
     }

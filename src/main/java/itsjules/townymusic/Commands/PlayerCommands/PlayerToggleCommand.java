@@ -1,7 +1,7 @@
 package itsjules.townymusic.Commands.PlayerCommands;
 
 import com.palmergames.bukkit.towny.TownyMessaging;
-import itsjules.townymusic.Listeners.TownEnterListener;
+import itsjules.townymusic.Commands.Utils.MusicUtils;
 import itsjules.townymusic.TownyMusic;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
@@ -34,8 +34,8 @@ public class PlayerToggleCommand implements CommandExecutor, TabCompleter {
             ((Player) sender).getPersistentDataContainer().set(new NamespacedKey(TownyMusic.plugin, "TownyMusic"), PersistentDataType.STRING, "false");
             TownyMessaging.sendMsg(sender, "Music inside towns has been turned off.");
 
-            if(TownEnterListener.radioMap.containsKey(((Player) sender).getUniqueId())){
-                TownEnterListener.radioMap.get(((Player) sender).getUniqueId()).destroy();
+            if(MusicUtils.radioMap.containsKey(((Player) sender).getUniqueId())){
+                MusicUtils.radioMap.get(((Player) sender).getUniqueId()).destroy();
             }
 
         }

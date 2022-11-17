@@ -12,3 +12,5 @@ commands:
     description: sets volume for music
   reloadconfig:
     description: reloads configuration
+  purgemusic:
+    description: purges music for online players

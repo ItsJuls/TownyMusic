@@ -19,6 +19,7 @@ public class ReloadCommand implements CommandExecutor {
 
         if(!(sender instanceof Player)){
             TownyMusic.logger.info("Reloaded Config!");
+            TownyMusic.plugin.reloadConfig();
             return true;
         }
         TownyMessaging.sendMsg(sender, "Reloaded Config!");
