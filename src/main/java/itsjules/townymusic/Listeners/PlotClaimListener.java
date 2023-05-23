@@ -3,6 +3,7 @@ package itsjules.townymusic.Listeners;
 import com.palmergames.bukkit.towny.event.TownClaimEvent;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.metadata.BooleanDataField;
+import com.palmergames.bukkit.towny.object.metadata.StringDataField;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -17,5 +18,10 @@ public class PlotClaimListener implements Listener {
         if(!tb.hasMeta("ToggleRepeat")){
             tb.addMetaData(new BooleanDataField("ToggleRepeat", true));
         }
+
+        if(!tb.hasMeta("PlotMusic")){
+            tb.addMetaData(new StringDataField("PlotMusic", ""));
+        }
+
     }
 }

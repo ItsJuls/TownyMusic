@@ -6,6 +6,7 @@ import com.palmergames.bukkit.towny.object.AddonCommand;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.metadata.BooleanDataField;
+import com.palmergames.bukkit.towny.object.metadata.StringDataField;
 import itsjules.townymusic.Commands.AdminCommands.AdminSetCommand;
 import itsjules.townymusic.Commands.AdminCommands.AdminToggleCommand;
 import itsjules.townymusic.Commands.AdminCommands.PurgeMusicCommand;
@@ -51,20 +52,27 @@ public final class TownyMusic extends JavaPlugin {
     }
 
     public void checkTowns(){
+
         logger.info("Applying data for towns...");
         for(Town town: TownyAPI.getInstance().getTowns()){
             if(!town.hasMeta("ToggleMusic")){
                 town.addMetaData(new BooleanDataField("ToggleMusic", true));
             }
+            if(!town.hasMeta("Music")){
+                town.addMetaData(new StringDataField("Music", ""));
+            }
 
             if(!town.hasMeta("ToggleRepeat")){
                 town.addMetaData(new BooleanDataField("ToggleRepeat", true));
             }
+
             for(TownBlock tb: town.getTownBlocks()){
                 if(!tb.hasMeta("ToggleMusic")){
                     tb.addMetaData(new BooleanDataField("ToggleMusic", true));
                 }
-
+                if(!tb.hasMeta("PlotMusic")){
+                    tb.addMetaData(new StringDataField("PlotMusic", ""));
+                }
                 if(!tb.hasMeta("ToggleRepeat")){
                     tb.addMetaData(new BooleanDataField("ToggleRepeat", true));
                 }

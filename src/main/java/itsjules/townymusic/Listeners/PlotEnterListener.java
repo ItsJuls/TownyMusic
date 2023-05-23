@@ -27,74 +27,74 @@ public class PlotEnterListener implements Listener {
         PersistentDataContainer pdc = player.getPersistentDataContainer();
         Resident res = TownyAPI.getInstance().getResident(player);
 
-        if (e.getTo().getTownBlockOrNull() != null) {
 
-            TownBlock tb = e.getTo().getTownBlockOrNull();
+            if (e.getTo().getTownBlockOrNull() != null) {
 
-            if (e.getTo().getTownBlockOrNull().hasMeta("PlotMusic")) {
+                TownBlock tb = e.getTo().getTownBlockOrNull();
 
-                String songName = String.join(" ", (CharSequence) tb.getMetadata("PlotMusic").getValue());
+                if (!e.getTo().getTownBlockOrNull().getMetadata("PlotMusic").getValue().equals("")) {
 
-                File file = new File(TownyMusic.plugin.getDataFolder(), "/Songs/" + songName);
-
-                if (pdc.getOrDefault(new NamespacedKey(TownyMusic.plugin, "TownyMusic"), PersistentDataType.STRING, "true").equalsIgnoreCase("true")) {
-
-                    if (!file.isDirectory()) {
-                        if (file.exists()) {
-
-                            Song song = NBSDecoder.parse(file);
-                            RadioSongPlayer rsp = new RadioSongPlayer(song);
-
-                            if (MusicUtils.radioMap.containsKey(player.getUniqueId())) {
-                                if (!MusicUtils.radioMap.get(player.getUniqueId()).getSong().getPath().equals(rsp.getSong().getPath())) {
-                                    MusicUtils.radioMap.get(player.getUniqueId()).destroy();
-                                    MusicUtils.playMusic(player, tb, rsp);
-                                    MusicUtils.radioMap.put(player.getUniqueId(), rsp);
-                                }
-                                if(!MusicUtils.radioMap.get(player.getUniqueId()).isPlaying()){
-                                    MusicUtils.radioMap.get(player.getUniqueId()).destroy();
-                                    MusicUtils.playMusic(player, tb, rsp);
-                                    MusicUtils.radioMap.put(player.getUniqueId(), rsp);
-                                }
-                            } else {
-                                MusicUtils.playMusic(player, tb, rsp);
-                                MusicUtils.radioMap.put(player.getUniqueId(), rsp);
-                            }
-                        }
-
-                    } else if (!file.exists() && tb.isOwner(res)) {
-                        TownyMessaging.sendMsg(player, "Could not find this song/song is invalid.");
-                    }
-                }
-            } else {
-                if (pdc.getOrDefault(new NamespacedKey(TownyMusic.plugin, "TownyMusic"), PersistentDataType.STRING, "true").equalsIgnoreCase("true")) {
-                    Town town = e.getTo().getTownOrNull();
-
-                    String songName = String.join(" ", (CharSequence) town.getMetadata("Music").getValue());
+                    String songName = String.join(" ", (CharSequence) tb.getMetadata("PlotMusic").getValue());
 
                     File file = new File(TownyMusic.plugin.getDataFolder(), "/Songs/" + songName);
 
-                    if (!file.isDirectory()) {
-                        if (file.exists()) {
-                            Song song = NBSDecoder.parse(file);
-                            RadioSongPlayer rsp = new RadioSongPlayer(song);
+                    if (pdc.getOrDefault(new NamespacedKey(TownyMusic.plugin, "TownyMusic"), PersistentDataType.STRING, "true").equalsIgnoreCase("true")) {
 
-                            if (MusicUtils.radioMap.containsKey(player.getUniqueId())) {
-                                if (!MusicUtils.radioMap.get(player.getUniqueId()).getSong().getPath().equals(rsp.getSong().getPath())) {
-                                    MusicUtils.radioMap.get(player.getUniqueId()).destroy();
-                                    MusicUtils.playMusic(player, town, rsp);
+                        if (!file.isDirectory()) {
+                            if (file.exists()) {
+
+                                Song song = NBSDecoder.parse(file);
+                                RadioSongPlayer rsp = new RadioSongPlayer(song);
+
+                                if (MusicUtils.radioMap.containsKey(player.getUniqueId())) {
+                                    if (!MusicUtils.radioMap.get(player.getUniqueId()).getSong().getPath().equals(rsp.getSong().getPath())) {
+                                        MusicUtils.radioMap.get(player.getUniqueId()).destroy();
+                                        MusicUtils.playMusic(player, tb, rsp);
+                                        MusicUtils.radioMap.put(player.getUniqueId(), rsp);
+                                    }
+                                    if (!MusicUtils.radioMap.get(player.getUniqueId()).isPlaying()) {
+                                        MusicUtils.radioMap.get(player.getUniqueId()).destroy();
+                                        MusicUtils.playMusic(player, tb, rsp);
+                                        MusicUtils.radioMap.put(player.getUniqueId(), rsp);
+                                    }
+                                } else {
+                                    MusicUtils.playMusic(player, tb, rsp);
                                     MusicUtils.radioMap.put(player.getUniqueId(), rsp);
                                 }
-                                if(!MusicUtils.radioMap.get(player.getUniqueId()).isPlaying()){
-                                    MusicUtils.radioMap.get(player.getUniqueId()).destroy();
-                                    MusicUtils.playMusic(player, town, rsp);
-                                    MusicUtils.radioMap.put(player.getUniqueId(), rsp);
-                                }
-                            }else {
-                                MusicUtils.playMusic(player, town, rsp);
-                                MusicUtils.radioMap.put(player.getUniqueId(), rsp);
                             }
 
+                        } else if (!file.exists() && tb.isOwner(res)) {
+                            TownyMessaging.sendMsg(player, "Could not find this song/song is invalid.");
+                        }
+                    }
+                } else {
+                    if (pdc.getOrDefault(new NamespacedKey(TownyMusic.plugin, "TownyMusic"), PersistentDataType.STRING, "true").equalsIgnoreCase("true")) {
+                        Town town = e.getTo().getTownOrNull();
+
+                        String songName = String.join(" ", (CharSequence) town.getMetadata("Music").getValue());
+
+                        File file = new File(TownyMusic.plugin.getDataFolder(), "/Songs/" + songName);
+
+                        if (!file.isDirectory()) {
+                            if (file.exists()) {
+                                Song song = NBSDecoder.parse(file);
+                                RadioSongPlayer rsp = new RadioSongPlayer(song);
+
+                                if (MusicUtils.radioMap.containsKey(player.getUniqueId())) {
+                                    if (!MusicUtils.radioMap.get(player.getUniqueId()).getSong().getPath().equals(rsp.getSong().getPath())) {
+                                        MusicUtils.radioMap.get(player.getUniqueId()).destroy();
+                                        MusicUtils.playMusic(player, town, rsp);
+                                        MusicUtils.radioMap.put(player.getUniqueId(), rsp);
+                                    }
+                                    if (!MusicUtils.radioMap.get(player.getUniqueId()).isPlaying()) {
+                                        MusicUtils.radioMap.get(player.getUniqueId()).destroy();
+                                        MusicUtils.playMusic(player, town, rsp);
+                                        MusicUtils.radioMap.put(player.getUniqueId(), rsp);
+                                    }
+                                } else {
+                                    MusicUtils.playMusic(player, town, rsp);
+                                    MusicUtils.radioMap.put(player.getUniqueId(), rsp);
+                                }
 
 
                             } else if (!file.exists() && tb.isOwner(res)) {
