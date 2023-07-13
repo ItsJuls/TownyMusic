@@ -1,0 +1,8 @@
+# Gives extra octaves for songs, resource pack for it needed.
+ExtraOctaves: false
+# Seconds to fade out song if left the town.
+FadeOutSeconds: 2
+# Channel to play custom resource pack music from Java. Choices are: ambient
+JavaChannel: master
+# Due to a limitation on bedrock sounds, the Master channel does not follow the player if they are on bedrock.
+BedrockChannel: player
